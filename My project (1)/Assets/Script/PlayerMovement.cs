@@ -21,10 +21,12 @@ public class PlayerMovement : MonoBehaviour
 
 	//REFERENCES
 	private CharacterController controller;
+	private Animator anim;
 
 	private void Start()
 	{
 		controller = GetComponent<CharacterController>();
+		anim = GetComponentInChildren<Animator>();
 	}
 
 	private void Update()
@@ -44,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
 		float moveZ = Input.GetAxis("Vertical");
 
 		moveDirection = new Vector3(0, 0, moveZ);
+		moveDirection = transform.TransformDirection(moveDirection);
 
 		if (isGrounded)
 		{
@@ -80,17 +83,19 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	private void Idle()
-	{ 
-	
+	{
+		anim.SetFloat("Speed", 0, 0.1f, Time.deltaTime);
 	}
 	private void Walk()
 	{
 		moveSpeeed = walkSpeed;
+		anim.SetFloat("Speed", 0.5f, 0.1f, Time.deltaTime);
 	}
 
 	private void Run()
 	{
 		moveSpeeed = runSpeed;
+		anim.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
 	}
 
 	private void Jump()
